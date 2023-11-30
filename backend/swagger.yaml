@@ -27,6 +27,8 @@ paths:
       summary: Create a new user
       description: Create a new user in painel admin
       operationId: user
+      security:
+        - bearerAuth: [jwt]
       requestBody: 
         description: Create a new user
         content:
@@ -103,6 +105,8 @@ paths:
       summary: Find user 
       description: Find user by id
       operationId: user
+      security:
+        - bearerAuth: [jwt]
       parameters:
         - in: query
           name: id
@@ -224,6 +228,56 @@ paths:
       summary: Find all samples
       description: Find all samples
       operationId: sample
+      security:
+        - bearerAuth: [jwt]
+      responses:
+        '200':
+            description: Find sample
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/SampleResponses'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    format: int32
+                    example: 4001
+                  description:
+                    type: string
+                    example: Invalid request
+        '404':
+          description: User not found
+        '401':
+          description: Unauthorized
+  
+  /samples/date:
+    get:
+      tags:
+        - "sample"
+      summary: Find all samples by date
+      description: Find all samples by between initial date and final date
+      operationId: sample
+      security:
+        - bearerAuth: [jwt]
+      parameters:
+        - in: query
+          name: initial
+          description: Initial date of sample
+          example: 2023-01-08T21:00:00.704Z
+          schema:
+            type: string
+        - in: query
+          name: final
+          description: Final date of sample
+          example: 2023-02-08T21:00:00.704Z
+          schema:
+            type: string
       responses:
         '200':
             description: Find sample
@@ -264,6 +318,8 @@ paths:
           example: 99
           schema:
             type: string
+      security:
+        - bearerAuth: [jwt]
       requestBody:
         description: Create a new sample
         content:
@@ -307,6 +363,8 @@ paths:
       summary: Find sample
       description: Find sample by id
       operationId: sample
+      security:
+        - bearerAuth: [jwt]
       responses:
         '200':
           description: Find sample
